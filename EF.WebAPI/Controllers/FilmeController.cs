@@ -1,8 +1,10 @@
 ﻿using EF.WebAPI.Data;
 using EF.WebAPI.Data.Dtos;
 using EF.WebAPI.Models;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -21,15 +23,6 @@ namespace EF.WebAPI.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        public IActionResult AdicionaFilme([FromBody] CreateFilmeDto filmeDto)
-        {
-
-            _context.Filmes.Add(filme);
-            _context.SaveChanges();
-            return CreatedAtAction(nameof(getFilmeById), new { Id = filmeDto.Id }, filmeDto);
-        }
-
         [HttpGet]
         public IEnumerable<Filme> GetAllFilmes()
         {
@@ -45,6 +38,43 @@ namespace EF.WebAPI.Controllers
                 return NotFound();
             }
             return Ok(filme);
+        }
+
+        [HttpPost]
+        public IActionResult AddFilme([FromBody] CreateFilmeDto filmeDto)
+        {
+            Filme filme = new Filme
+            {
+                Nome = filmeDto.Nome,
+                Diretor = filmeDto.Diretor,
+                Duracao = filmeDto.Duracao
+            };
+
+            _context.Filmes.Add(filme);
+            _context.SaveChanges();
+            return CreatedAtAction(nameof(getFilmeById), new { Id = filme.Id }, filmeDto);
+        }
+
+        [HttpPut]
+        public IActionResult UpdateFilme([FromBody] UpdateFilmeDto filmeDto)
+        {
+            Filme filme = new Filme
+            {
+                Id = filmeDto.Id,
+                Nome = filmeDto.Nome,
+                Diretor = filmeDto.Diretor,
+                Duracao = filmeDto.Duracao
+            };
+
+            try {
+                _context.Filmes.Update(filme);
+                _context.SaveChanges();
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return CreatedAtAction(nameof(getFilmeById), new { Id = filme.Id }, filmeDto);
         }
     }
 }
