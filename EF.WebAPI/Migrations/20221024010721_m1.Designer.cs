@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EF.WebAPI.Migrations
 {
-    [DbContext(typeof(FilmeContext))]
+    [DbContext(typeof(AppDbContext))]
     [Migration("20221024010721_m1")]
     partial class m1
     {

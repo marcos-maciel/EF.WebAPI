@@ -16,61 +16,61 @@ namespace EF.WebAPI.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class FilmeController : ControllerBase
+    public class CinemaController : ControllerBase
     {
         private AppDbContext _context;
         private IMapper _mapper;
 
-        public FilmeController(AppDbContext context, IMapper mapper)
+        public CinemaController(AppDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public IEnumerable<Filme> GetAllFilmes()
+        public IEnumerable<Cinema> GetAllCinemas()
         {
-            return _context.Filmes;
+            return _context.Cinemas;
         }
 
         [HttpGet("{id}")]
-        public IActionResult getFilmeById(int id)
+        public IActionResult getCinemaById(int id)
         {
-            Filme filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
-            if(filme == null)
+            Cinema cinema = _context.Cinemas.FirstOrDefault(cinema => cinema.Id == id);
+            if(cinema == null)
             {
                 return NotFound();
             } else
             {
-                GetCinemaDto filmeDto = _mapper.Map<GetCinemaDto>(filme);
-                return Ok(filmeDto);
+                GetCinemaDto cinemaDto = _mapper.Map<GetCinemaDto>(cinema);
+                return Ok(cinemaDto);
             }
         }
 
         [HttpPost]
-        public IActionResult AddFilme([FromBody] CreateCinemaDto filmeDto)
+        public IActionResult AddCinema([FromBody] CreateCinemaDto cinemaDto)
         {
-            Filme filme = _mapper.Map<Filme>(filmeDto);
+            Cinema cinema = _mapper.Map<Cinema>(cinemaDto);
 
-            _context.Filmes.Add(filme);
+            _context.Cinemas.Add(cinema);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(getFilmeById), new { Id = filme.Id }, filmeDto);
+            return CreatedAtAction(nameof(getCinemaById), new { Id = cinema.Id }, cinemaDto);
         }
 
         [HttpPut]
-        public IActionResult UpdateFilme([FromBody] UpdateCinemaDto filmeDto)
+        public IActionResult UpdateCinema([FromBody] UpdateCinemaDto cinemaDto)
         {
-            Filme filme = _mapper.Map<Filme>(filmeDto);
+            Cinema cinema = _mapper.Map<Cinema>(cinemaDto);
 
             try {
-                _context.Filmes.Update(filme);
+                _context.Cinemas.Update(cinema);
                 _context.SaveChanges();
             } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
 
-            return CreatedAtAction(nameof(getFilmeById), new { Id = filme.Id }, filmeDto);
+            return CreatedAtAction(nameof(getCinemaById), new { Id = cinema.Id }, cinemaDto);
         }
     }
 }
