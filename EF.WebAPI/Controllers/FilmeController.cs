@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using EF.WebAPI.Data;
 using EF.WebAPI.Data.Dtos;
+using EF.WebAPI.Data.Dtos.User;
 using EF.WebAPI.Data.Mapper;
 using EF.WebAPI.Models;
+using EF.WebAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EF.WebAPI.Controllers
 {
@@ -18,59 +22,83 @@ namespace EF.WebAPI.Controllers
     [ApiController]
     public class FilmeController : ControllerBase
     {
-        private AppDbContext _context;
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
+        private readonly IFilmeService _filmeService;
 
-        public FilmeController(AppDbContext context, IMapper mapper)
+        public FilmeController(IFilmeService filmeService, IMapper mapper)
         {
-            _context = context;
+            _filmeService = filmeService;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public IEnumerable<Filme> GetAllFilmes()
+        [Authorize]
+        public async Task<IActionResult> GetAllFilmes()
         {
-            return _context.Filmes;
+            var result = await _filmeService.GetAllFilmes();
+            if (result.Count == 0)
+            {
+                return NoContent();
+            }
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
-        public IActionResult getFilmeById(int id)
+        [Authorize]
+        public async Task<IActionResult> GetFilmeById(int id)
         {
-            Filme filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
-            if(filme == null)
+            Filme filme = await _filmeService.GetFilmeById(id);
+            if (filme == null)
             {
                 return NotFound();
-            } else
-            {
-                GetCinemaDto filmeDto = _mapper.Map<GetCinemaDto>(filme);
+            } else {
+                DeleteFilmeDto filmeDto = _mapper.Map<DeleteFilmeDto>(filme);
                 return Ok(filmeDto);
             }
         }
 
         [HttpPost]
-        public IActionResult AddFilme([FromBody] CreateCinemaDto filmeDto)
+        [Authorize]
+        public IActionResult AddFilme([FromBody] CreateFilmeDto filmeDto)
         {
             Filme filme = _mapper.Map<Filme>(filmeDto);
 
-            _context.Filmes.Add(filme);
-            _context.SaveChanges();
-            return CreatedAtAction(nameof(getFilmeById), new { Id = filme.Id }, filmeDto);
+            _filmeService.AddFilme(filme);
+            return CreatedAtAction(nameof(GetFilmeById), new { Id = filme.Id }, filmeDto);
         }
 
         [HttpPut]
-        public IActionResult UpdateFilme([FromBody] UpdateCinemaDto filmeDto)
+        [Authorize]
+        public IActionResult UpdateFilme([FromBody] UpdateFilmeDto filmeDto)
         {
             Filme filme = _mapper.Map<Filme>(filmeDto);
 
             try {
-                _context.Filmes.Update(filme);
-                _context.SaveChanges();
+                _filmeService.UpdateFilme(filme);
             } catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
 
-            return CreatedAtAction(nameof(getFilmeById), new { Id = filme.Id }, filmeDto);
+            return CreatedAtAction(nameof(GetFilmeById), new { Id = filme.Id }, filmeDto);
+        }
+
+        [HttpDelete]
+        [Authorize]
+        public IActionResult DeleteFilme([FromBody] DeleteFilmeDto filmeDto)
+        {
+            Filme filme = _mapper.Map<Filme>(filmeDto);
+
+            try
+            {
+                _filmeService.DeleteFilme(filme);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return CreatedAtAction(nameof(GetFilmeById), new { Id = filme.Id }, filmeDto);
         }
     }
 }

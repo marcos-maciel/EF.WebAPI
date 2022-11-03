@@ -2,7 +2,7 @@
 
 namespace EF.WebAPI.Models
 {
-    public class Cinema
+    public class User
     {
         [Key]
         [Required]
@@ -11,10 +11,7 @@ namespace EF.WebAPI.Models
         [Required(ErrorMessage = "nome é obrigatorio")]
         public string Nome { get; set; }
 
-        [Required]
-        public virtual Endereco Endereco { get; set; }
-
-        [Required]
-        public int EnderecoId { get; set; }
+        [Required(ErrorMessage = "senha é obrigatorio")]
+        public string Senha { get; set; }
     }
 }

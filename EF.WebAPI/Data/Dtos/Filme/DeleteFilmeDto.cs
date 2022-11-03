@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace EF.WebAPI.Data.Dtos
 {
-    public class UpdateCinemaDto
+    public class DeleteFilmeDto
     {
         [Key]
         [Required]
@@ -10,8 +11,5 @@ namespace EF.WebAPI.Data.Dtos
 
         [Required(ErrorMessage = "nome é obrigatorio")]
         public string Nome { get; set; }
-
-        [Required]
-        public int EnderecoId { get; set; }
     }
 }

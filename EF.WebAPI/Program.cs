@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EF.WebAPI
 {
-    public class Program
+    public partial class Program
     {
         public static void Main(string[] args)
         {

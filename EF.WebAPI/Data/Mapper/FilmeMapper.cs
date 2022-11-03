@@ -8,9 +8,10 @@ namespace EF.WebAPI.Data.Mapper
     {
         public FilmeMapper()
         {
-            CreateMap<Filme, GetCinemaDto>();
-            CreateMap<CreateCinemaDto, Filme>();
-            CreateMap<UpdateCinemaDto, Filme>();
+            CreateMap<Filme, DeleteFilmeDto>();
+            CreateMap<CreateFilmeDto, Filme>();
+            CreateMap<UpdateFilmeDto, Filme>();
+            CreateMap<DeleteFilmeDto, Filme>();
         }
 
     }
