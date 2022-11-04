@@ -2,15 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>ff0b4a69-6f25-48ce-9872-0d37f6de246a</UserSecretsId>
+    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Controllers\WeatherForecastController.cs" />
     <Compile Remove="WeatherForecast.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Dockerfile" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +27,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.0" />
     <PackageReference Include="Moq" Version="4.18.2" />
     <PackageReference Include="MySql.EntityFrameworkCore" Version="5.0.17" />
     <PackageReference Include="MySqlConnector" Version="2.1.13" />
