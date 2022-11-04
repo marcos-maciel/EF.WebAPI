@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EF.WebAPI", "EF.WebAPI\EF.WebAPI.csproj", "{C772FE00-0758-4004-9D2D-626AC456677A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webapi", "EF.WebAPI\webapi.csproj", "{C772FE00-0758-4004-9D2D-626AC456677A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EF.WebApi.TestMoq", "EF.WebApi.TestMoq\EF.WebApi.TestMoq.csproj", "{DFCC5094-F981-49E7-B3C5-B1D30CBBE31F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "webapitests", "EF.WebApi.TestMoq\webapitests.csproj", "{DFCC5094-F981-49E7-B3C5-B1D30CBBE31F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

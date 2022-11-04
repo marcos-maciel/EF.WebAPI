@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EF.WebAPI\EF.WebAPI.csproj" />
+    <ProjectReference Include="..\EF.WebAPI\webapi.csproj" />
   </ItemGroup>
 
 </Project>
